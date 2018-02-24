@@ -2,19 +2,18 @@
  *
  * @author Kalana
  */
-
-public class Encryptor {
+public class Decryptor {
     private int[] text;
     private String key;
     private int[] processedKey;
    
-    Encryptor(String encryptionKey){
-        key = encryptionKey;
+    Decryptor(String decryptionKey){
+        key = decryptionKey;
     }
     
     /*
-    this method will process the 'encryptionKey' to a key that can be used as
-    parameters for substituition and permutation methods
+    this method will process the 'decryptionKey' to a key that can be used as
+    parameters for inverseSubstituition and inversePermutation methods
     */
     private int[] processKey(String text){
         int[] keyTraits = new int[text.length()];
@@ -28,9 +27,9 @@ public class Encryptor {
     }
     
     /*
-    this will convert the originalText in to array of integers which are 
+    this will convert the encryptedText in to array of integers which are 
     derieved from the ascii table. This array will be used to create the 
-    encrypted text using substitution method and permutation method.
+    original text using substitution method and permutation method.
     */
     private int[] processText(String text){
         int[] textArray = new int[text.length()];
@@ -41,24 +40,24 @@ public class Encryptor {
     }
     
     /*
-    this will add 'key' value to each value in 'text' array increasing their 
-    ascii value thus moving the position in the ascii table. by doing this we
-    archieve substituition required
+    this will subsstract 'key' value from each value in 'text' array decreasing 
+    their ascii value thus moving the position in the ascii table. by doing this 
+    we remove substituition required
     */
-    private int[] substituition(int[] text, int key){
+    private int[] inverseSubstituition(int[] text, int key){
         for (int i=0; i<text.length; i++){
-            text[i]=text[i] + key;
+            text[i]=text[i] + (128 - key);
             text[i] %= 128;
         }
         return text;
     }
     
     /*
-    this method will permutate the array by taking a sub array and changing their 
+    this method will Inverse permutate the array by taking a sub array and changing their 
     element order (one with the last, second with the one before last etc). sub 
     array size will be decided by the 'value' wich will be betwween 0 and 10.
     */
-    private int[] permutation(int[] text, int value){
+    private int[] inversePermutation(int[] text, int value){
         int[] temp = text;
         int tempVariable;
         int multiplier = temp.length % value;
@@ -86,21 +85,20 @@ public class Encryptor {
     }
     
     /*
-    this method will call create the encryption key and the prepare the original 
-    text. then it will call permutation method and substituition method one after
-    on the riginal text taking values from the encryption key.
+    this method will decrypt the encrypted text using inverseSubstituition medthod
+    and inversePermutation methods
     */
-    public String encrypt(String originalText){
+    public String decrypt(String encryptedText){
         processedKey = processKey(key);
-        text = processText(originalText);
+        text = processText(encryptedText);
         
-        for(int i=0; i<processedKey.length;i++){
+        for(int i=processedKey.length-1; i>=0;i--){
             if(i%2==0){
-                text = substituition(text, processedKey[i]);
+                text = inverseSubstituition(text, processedKey[i]);
             } else {
-                text = permutation(text, processedKey[i]);
+                text = inversePermutation(text, processedKey[i]);
             }
         }
-        return finalizeText(text);   
+        return finalizeText(text); 
     }
 }
