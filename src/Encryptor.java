@@ -36,7 +36,7 @@ public class Encryptor {
         int[] textArray = new int[text.length()];
         for(int i= 0; i<text.length();i++){
             textArray[i] = (int) text.charAt(i);
-            }
+        }
         return textArray;
     }
     
@@ -80,7 +80,8 @@ public class Encryptor {
     private String finalizeText(int[] array){
         String temp = "";
         for(int i=0;i<array.length;i++){
-            temp += (char) array[i];
+            temp += Integer.toString(array[i]);
+            temp += " ";
         }
         return temp;
     }

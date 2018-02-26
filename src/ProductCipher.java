@@ -39,7 +39,7 @@ public class ProductCipher {
         */
         } else if (method.equalsIgnoreCase("encrypt")){
             try{
-                String text = reader.readFile("text2.txt");
+                String text = reader.readFile("text.txt");
                 
                 String encryptedText = encryptor.encrypt(text);
                 

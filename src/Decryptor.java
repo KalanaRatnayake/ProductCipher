@@ -32,10 +32,11 @@ public class Decryptor {
     original text using substitution method and permutation method.
     */
     private int[] processText(String text){
-        int[] textArray = new int[text.length()];
-        for(int i= 0; i<text.length();i++){
-            textArray[i] = (int) text.charAt(i);
-            }
+        String[] splittedString = text.split("\\s+");
+        int[] textArray = new int[splittedString.length];
+        for(int i= 0; i<splittedString.length;i++){
+            textArray[i] = Integer.parseInt(splittedString[i]);
+        }
         return textArray;
     }
     
