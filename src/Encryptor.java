@@ -22,6 +22,7 @@ public class Encryptor {
             keyTraits[i] = (int) text.charAt(i);
             if (i%2==1){
                 keyTraits[i] %= 10;
+                keyTraits[i] += 1;
             }
         }
         return keyTraits;
@@ -47,8 +48,9 @@ public class Encryptor {
     */
     private int[] substituition(int[] text, int key){
         for (int i=0; i<text.length; i++){
-            text[i]=text[i] + key;
-            text[i] %= 128;
+            if (i%2==0){
+                text[i]= (text[i] + key)%128;
+            }
         }
         return text;
     }
@@ -58,18 +60,19 @@ public class Encryptor {
     element order (one with the last, second with the one before last etc). sub 
     array size will be decided by the 'value' wich will be betwween 0 and 10.
     */
-    private int[] permutation(int[] text, int value){
-        int[] temp = text;
-        int tempVariable;
-        int multiplier = temp.length % value;
+    private int[] permutation(int[] array, int value){
+        int[] temp = array;
+        int tempVar;
+        int multiplier = (temp.length/value);
+        
         for(int i=0; i<multiplier; i++){
-            for (int j=i*value; j<(i+1)*value; j++){
-                tempVariable = temp[i];
-                temp[i] = temp[(((2*i)+1)*value)-1];
-                temp[(((2*i)+1)*value)-1] = tempVariable;
-                
+            int total = (((2*i)*value)+value-1);
+            for (int j=i*value; j<(i+0.5)*value; j++){
+                tempVar = temp[j];
+                temp[j] = temp[total-j];
+                temp[total-j] = tempVar;
             }
-        }
+        }   
         return temp;
     }
     
